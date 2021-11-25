@@ -10,7 +10,8 @@ please see the [main Zonemaster Repository].
 
 ## Prerequisites
 
-Before installing Zonemaster::CLI, you should [install Zonemaster::Engine][
+Before installing Zonemaster::CLI, unless you are using the Zonemaster package
+repository, you should [install Zonemaster::Engine][
 Zonemaster::Engine installation].
 
 > **Note:** [Zonemaster::Engine] and [Zonemaster::LDNS] are dependencies of
@@ -31,9 +32,8 @@ Zonemaster::CLI, see the [declaration of prerequisites].
 This instruction covers the following operating systems:
 
  * [Installation on CentOS]
- * [Installation on Debian]
+ * [Installation on Debian and Ubuntu]
  * [Installation on FreeBSD]
- * [Installation on Ubuntu]
 
 ### Installation on CentOS
 
@@ -49,39 +49,54 @@ This instruction covers the following operating systems:
    sudo cpanm Text::Reflow
    ```
 
-3) Install Zonemaster::CLI 
+3) Install Zonemaster::CLI
 
    ```sh
    sudo cpanm Zonemaster::CLI
    ```
 
 
-### Installation on Debian
+### Installation on Debian and Ubuntu
+Update configuration of "locale"
 
-1) Update configuration of "locale"
+```sh
+sudo perl -pi -e 's/^# (da_DK\.UTF-8.*|en_US\.UTF-8.*|fi_FI\.UTF-8.*|fr_FR\.UTF-8.*|nb_NO\.UTF-8.*|sv_SE\.UTF-8.*)/$1/' /etc/locale.gen
+sudo locale-gen
+```
 
+After the update, `locale -a` should at least list the following locales:
+```
+da_DK.utf8
+en_US.utf8
+fi_FI.utf8
+fr_FR.utf8
+nb_NO.utf8
+sv_SE.utf8
+```
+
+#### Using the Zonemaster package repository (amd64 architecture only)
+
+> Note: In order to use algorithm 15 and 16 on Ubuntu 20.04 the CPAN installation
+> must be used.
+
+1) Configure Zonemaster repository
    ```sh
-   sudo perl -pi -e 's/^# (da_DK\.UTF-8.*|en_US\.UTF-8.*|fi_FI\.UTF-8.*|fr_FR\.UTF-8.*|nb_NO\.UTF-8.*|sv_SE\.UTF-8.*)/$1/' /etc/locale.gen
-   sudo locale-gen
+   curl -Ls https://package.zonemaster.net/get.sh | sudo bash
+   ```
+2) Install Zonemaster CLI
+   ```sh
+   sudo apt install zonemaster-cli
    ```
 
-   After the update, `locale -a` should at least list the following locales:
-   ```
-   da_DK.utf8
-   en_US.utf8
-   fi_FI.utf8
-   fr_FR.utf8
-   nb_NO.utf8
-   sv_SE.utf8
-   ```
+#### Using CPAN
 
-2) Install dependencies:
+1) Install dependencies:
 
    ```sh
    sudo apt-get install libmoosex-getopt-perl libtext-reflow-perl libmodule-install-perl
    ```
 
-3) Install Zonemaster::CLI:
+2) Install Zonemaster::CLI:
 
    ```sh
    sudo cpanm Zonemaster::CLI
@@ -108,11 +123,6 @@ This instruction covers the following operating systems:
    ```
 
 
-### Installation on Ubuntu
-
-Use the procedure for installation on [Debian][Installation on Debian].
-
-
 ## Post-installation sanity check
 
 Run the zonemaster-cli command:
@@ -132,9 +142,8 @@ The command is expected to take a few seconds and print some results about the d
    installation] instruction.
 
 [Installation on CentOS]: #installation-on-centos
-[Installation on Debian]: #installation-on-debian
+[Installation on Debian and Ubuntu]: #installation-on-debian-and-ubuntu
 [Installation on FreeBSD]: #installation-on-freebsd
-[Installation on Ubuntu]: #installation-on-ubuntu
 
 [Declaration of prerequisites]: https://github.com/zonemaster/zonemaster/blob/master/README.md#prerequisites
 [JSON-RPC API]: https://github.com/zonemaster/zonemaster-backend/blob/master/docs/API.md
@@ -144,4 +153,3 @@ The command is expected to take a few seconds and print some results about the d
 [Zonemaster::Engine]: https://github.com/zonemaster/zonemaster-engine/blob/master/README.md
 [Zonemaster::GUI installation]: https://github.com/zonemaster/zonemaster-gui/blob/master/docs/Installation.md
 [Zonemaster::LDNS]: https://github.com/zonemaster/zonemaster-ldns/blob/master/README.md
-
